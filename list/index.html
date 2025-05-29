@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shibedia</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            color: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            font-weight: bold;
+            color: #000;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .connect-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .connect-section button {
+            padding: 10px 20px;
+            background: #1DA1F2;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .connect-section button:hover {
+            background: #0b7bc1;
+        }
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1em;
+            outline: none;
+            background: #f5f8fa;
+        }
+        .search-box button {
+            padding: 10px 20px;
+            background: #1DA1F2;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-box button:hover {
+            background: #0b7bc1;
+        }
+        .waterfall {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px 0;
+        }
+        .post-card {
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s;
+        }
+        .post-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .post-header img.avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        .post-header div {
+            flex-grow: 1;
+        }
+        .post-header h3 {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #000;
+        }
+        .post-header span {
+            font-size: 0.9em;
+            color: #657786;
+        }
+        .post-header .copy-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .post-header .copy-button img {
+            width: 16px;
+            height: 16px;
+        }
+        .post-header .copy-button .tooltip {
+            visibility: hidden;
+            background: #000;
+            color: #fff;
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            position: absolute;
+            top: -30px;
+            right: 0;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .post-header .copy-button.copied .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .post-content p.description {
+            font-size: 0.95em;
+            color: #000;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .post-content .info {
+            font-size: 0.9em;
+            color: #000;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .post-content .info img {
+            width: 16px;
+            height: 16px;
+        }
+        .post-content .info a {
+            color: #1DA1F2;
+            text-decoration: none;
+        }
+        .post-content .info a:hover {
+            text-decoration: underline;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .action-buttons button {
+            padding: 8px 16px;
+            background: #1DA1F2;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .action-buttons button:hover {
+            background: #0b7bc1;
+        }
+        .action-buttons .copy-contract-button .tooltip {
+            visibility: hidden;
+            background: #000;
+            color: #fff;
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .action-buttons .copy-contract-button.copied .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .status {
+            font-size: 0.9em;
+            color: #ff6b6b;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .footer {
+            font-size: 0.9em;
+            color: #657786;
+            text-align: center;
+            margin-top: auto;
+            padding: 20px 0;
+        }
+        .footer a {
+            color: #1DA1F2;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .search-box { flex-direction: column; }
+            .search-box input, .search-box button { width: 100%; }
+            .post-header h3 { font-size: 1em; }
+            .post-content p.description { font-size: 0.9em; }
+            .action-buttons { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Shibedia</h1>
+    </div>
+    <div class="connect-section">
+        <button id="connectWalletButton">Connect Wallet</button>
+    </div>
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="tokenAddress" placeholder="Search Meme Coin by Contract Address">
+            <button id="searchButton">Search</button>
+        </div>
+        <div id="searchStatus" class="status"></div>
+    </div>
+    <div class="waterfall" id="waterfall"></div>
+    <div class="footer">
+        <p><a href="index.html">Create Meme Coin</a> | <a href="metadata.html">Manage Metadata</a></p>
+        Powered by <a href="https://shibarium.shib.io/" target="_blank">Shibarium</a> | Shibedia © 2025
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+    <script>
+        let web3, accounts, tokenFactoryContract;
+        const tokenFactoryAddress = "0xCa2bF0A13D397d2d9582e6afd471829f056cf608";
+        const tokenFactoryABI = [
+            { inputs: [], name: "getLatestTokens", outputs: [{ internalType: "address[]", name: "tokens", type: "address[]" }], stateMutability: "view", type: "function" }
+        ];
+        const tokenABI = [
+            { inputs: [], name: "name", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+            { inputs: [], name: "symbol", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+            { inputs: [], name: "getMetadata", outputs: [
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" }
+            ], stateMutability: "view", type: "function" },
+            { inputs: [], name: "owner", outputs: [{ internalType: "address", name: "", type: "address" }], stateMutability: "view", type: "function" }
+        ];
+        const shibarium = {
+            chainId: 109,
+            name: 'Shibarium',
+            explorerUrl: 'https://shibariumscan.io',
+            rpcUrl: 'https://www.shibrpc.com'
+        };
+
+        function shortenAddress(address) {
+            if (!address || address === "0x0000000000000000000000000000000000000000") return "None";
+            return `${address.slice(0, 6)}...${address.slice(-4)}`;
+        }
+
+        async function initializeWeb3() {
+            web3 = new Web3(shibarium.rpcUrl);
+            tokenFactoryContract = new web3.eth.Contract(tokenFactoryABI, tokenFactoryAddress);
+            fetchLatestCoins();
+        }
+
+        async function connectWallet() {
+            const status = document.getElementById('searchStatus');
+            try {
+                if (!window.ethereum) {
+                    status.innerText = 'Please install MetaMask.';
+                    throw new Error("No wallet detected");
+                }
+                status.innerText = "Connecting...";
+                web3 = new Web3(window.ethereum);
+                accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                if (!accounts.length) throw new Error("Please unlock wallet.");
+                const chainId = await web3.eth.getChainId();
+                if (chainId !== 109) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: '0x6d' }]
+                        });
+                    } catch (switchError) {
+                        if (switchError.code === 4902) {
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [{
+                                    chainId: '0x6d',
+                                    chainName: 'Shibarium',
+                                    nativeCurrency: { name: 'BONE', symbol: 'BONE', decimals: 18 },
+                                    rpcUrls: ['https://www.shibrpc.com'],
+                                    blockExplorerUrls: ['https://shibariumscan.io']
+                                }]
+                            });
+                        } else {
+                            throw switchError;
+                        }
+                    }
+                }
+                document.getElementById('connectWalletButton').innerText = `Connected: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
+                status.innerText = "Connected to Shibarium";
+            } catch (error) {
+                status.innerText = "Failed to connect: " + error.message;
+            }
+        }
+
+        async function fetchLatestCoins() {
+            const status = document.getElementById('searchStatus');
+            const waterfall = document.getElementById('waterfall');
+            try {
+                status.innerText = "Fetching latest Meme Coins...";
+                const tokens = await tokenFactoryContract.methods.getLatestTokens().call();
+                waterfall.innerHTML = '';
+                if (!tokens.length) {
+                    waterfall.innerHTML = '<div class="status">No Meme Coins found.</div>';
+                    return;
+                }
+                for (const token of tokens.slice(0, 100)) {
+                    const tokenContract = new web3.eth.Contract(tokenABI, token);
+                    let name = 'Unknown', symbol = 'Unknown', metadata = ['', '', '', '', ''], owner = 'None';
+                    try {
+                        name = await tokenContract.methods.name().call();
+                        symbol = await tokenContract.methods.symbol().call();
+                        metadata = await tokenContract.methods.getMetadata().call();
+                        owner = await tokenContract.methods.owner().call();
+                    } catch (error) {
+                        console.warn(`Failed to fetch token ${token}: ${error.message}`);
+                    }
+                    const shortOwner = shortenAddress(owner);
+                    const card = document.createElement('div');
+                    card.className = 'post-card';
+                    card.innerHTML = `
+                        <div class="post-header">
+                            <img class="avatar" src="${metadata[0] || 'https://www.doge.gov/images/doge.png'}" alt="Token">
+                            <div>
+                                <h3>${name} (${symbol})</h3>
+                                <span>Created by ${shortOwner}</span>
+                            </div>
+                            <button class="copy-button" data-address="${owner}">
+                                <img src="https://img.icons8.com/ios-filled/16/000000/copy.png" alt="Copy">
+                                <span class="tooltip">Copied!</span>
+                            </button>
+                        </div>
+                        <div class="post-content">
+                            <p class="description">${metadata[1] || 'No description.'}</p>
+                            <div class="info">
+                                <img src="https://img.icons8.com/ios-filled/16/000000/link.png" alt="Website">
+                                <a href="${metadata[2] || '#'}" target="_blank">${metadata[2] ? new URL(metadata[2]).hostname : 'No website'}</a>
+                            </div>
+                            <div class="info">
+                                <img src="https://img.icons8.com/ios-filled/16/000000/twitter.png" alt="Twitter">
+                                <a href="${metadata[3] || '#'}" target="_blank">${metadata[3] ? '@' + metadata[3].split('/').pop() : 'No Twitter'}</a>
+                            </div>
+                            <div class="info">
+                                <img src="https://img.icons8.com/ios-filled/16/000000/telegram-app.png" alt="Telegram">
+                                <a href="${metadata[4] || '#'}" target="_blank">${metadata[4] ? metadata[4].split('/').pop() : 'No Telegram'}</a>
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="copy-contract-button" data-address="${token}">Copy Contract<span class="tooltip">Copied!</span></button>
+                        </div>
+                    `;
+                    waterfall.appendChild(card);
+                }
+                status.innerText = "";
+                document.querySelectorAll('.copy-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const address = button.dataset.address;
+                        if (address && address !== "None") {
+                            navigator.clipboard.writeText(address).then(() => {
+                                button.classList.add('copied');
+                                setTimeout(() => button.classList.remove('copied'), 2000);
+                            });
+                        }
+                    });
+                });
+                document.querySelectorAll('.copy-contract-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const address = button.dataset.address;
+                        if (address) {
+                            navigator.clipboard.writeText(address).then(() => {
+                                button.classList.add('copied');
+                                setTimeout(() => button.classList.remove('copied'), 2000);
+                            });
+                        }
+                    });
+                });
+            } catch (error) {
+                status.innerText = "Failed to fetch Meme Coins: " + error.message;
+            }
+        }
+
+        async function searchToken() {
+            const status = document.getElementById('searchStatus');
+            const waterfall = document.getElementById('waterfall');
+            const tokenAddress = document.getElementById('tokenAddress').value.trim();
+            if (!web3.utils.isAddress(tokenAddress)) return status.innerText = "Invalid contract address!";
+            try {
+                status.innerText = "Searching token...";
+                const tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
+                let name, symbol, metadata, owner;
+                try {
+                    name = await tokenContract.methods.name().call();
+                    symbol = await tokenContract.methods.symbol().call();
+                    metadata = await tokenContract.methods.getMetadata().call();
+                    owner = await tokenContract.methods.owner().call();
+                } catch (error) {
+                    throw new Error("Failed to fetch token details: " + error.message);
+                }
+                const shortOwner = shortenAddress(owner);
+                waterfall.innerHTML = '';
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <div class="post-header">
+                        <img class="avatar" src="${metadata[0] || 'https://www.doge.gov/images/doge.png'}" alt="Token">
+                        <div>
+                            <h3>${name} (${symbol})</h3>
+                            <span>Created by ${shortOwner}</span>
+                        </div>
+                        <button class="copy-button" data-address="${owner}">
+                            <img src="https://img.icons8.com/ios-filled/16/000000/copy.png" alt="Copy">
+                            <span class="tooltip">Copied!</span>
+                        </button>
+                    </div>
+                    <div class="post-content">
+                        <p class="description">${metadata[1] || 'No description.'}</p>
+                        <div class="info">
+                            <img src="https://img.icons8.com/ios-filled/16/000000/link.png" alt="Website">
+                            <a href="${metadata[2] || '#'}" target="_blank">${metadata[2] ? new URL(metadata[2]).hostname : 'No website'}</a>
+                        </div>
+                        <div class="info">
+                            <img src="https://img.icons8.com/ios-filled/16/000000/twitter.png" alt="Twitter">
+                            <a href="${metadata[3] || '#'}" target="_blank">${metadata[3] ? '@' + metadata[3].split('/').pop() : 'No Twitter'}</a>
+                        </div>
+                        <div class="info">
+                            <img src="https://img.icons8.com/ios-filled/16/000000/telegram-app.png" alt="Telegram">
+                            <a href="${metadata[4] || '#'}" target="_blank">${metadata[4] ? metadata[4].split('/').pop() : 'No Telegram'}</a>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="copy-contract-button" data-address="${tokenAddress}">Copy Contract<span class="tooltip">Copied!</span></button>
+                    </div>
+                `;
+                waterfall.appendChild(card);
+                status.innerText = "";
+                document.querySelector('.copy-button').addEventListener('click', () => {
+                    const address = document.querySelector('.copy-button').dataset.address;
+                    if (address && address !== "None") {
+                        navigator.clipboard.writeText(address).then(() => {
+                            document.querySelector('.copy-button').classList.add('copied');
+                            setTimeout(() => document.querySelector('.copy-button').classList.remove('copied'), 2000);
+                        });
+                    }
+                });
+                document.querySelector('.copy-contract-button').addEventListener('click', () => {
+                    const address = document.querySelector('.copy-contract-button').dataset.address;
+                    if (address) {
+                        navigator.clipboard.writeText(address).then(() => {
+                            document.querySelector('.copy-contract-button').classList.add('copied');
+                            setTimeout(() => document.querySelector('.copy-contract-button').classList.remove('copied'), 2000);
+                        });
+                    }
+                });
+            } catch (error) {
+                status.innerText = "Failed to fetch token: " + (error.message.includes('revert') ? error.message.split('revert')[1]?.trim() : error.message);
+            }
+        }
+
+        document.getElementById('connectWalletButton').addEventListener('click', connectWallet);
+        document.getElementById('searchButton').addEventListener('click', searchToken);
+
+        window.addEventListener('load', () => {
+            if (!window.location.protocol.includes('http')) {
+                document.getElementById('searchStatus').innerText = 'Please run via a local server (e.g., "npx serve").';
+            } else {
+                initializeWeb3();
+            }
+        });
+    </script>
+</body>
+</html>
