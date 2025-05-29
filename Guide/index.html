@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shibedia Usage Guide</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            color: #000;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: #1DA1F2;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        h1, h2, h3 {
+            color: #000;
+            margin-bottom: 15px;
+        }
+        h1 { font-size: 2em; text-align: center; font-weight: bold; }
+        h2 { font-size: 1.6em; font-weight: bold; }
+        h3 { font-size: 1.3em; }
+        p { margin-bottom: 15px; }
+        ul, ol { margin: 10px 0 20px 20px; }
+        li { margin-bottom: 10px; }
+        a { color: #1DA1F2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .highlight {
+            color: #1DA1F2;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #657786;
+            margin-top: 30px;
+        }
+        .footer a {
+            color: #1DA1F2;
+        }
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            h1 { font-size: 1.6em; }
+            h2 { font-size: 1.4em; }
+            h3 { font-size: 1.2em; }
+            .nav a { display: block; margin: 5px 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="https://shibfun.github.io/Token/">Create Meme Coin</a>
+        <a href="https://shibfun.github.io/Token/SetInfo/">Manage Metadata</a>
+        <a href="https://shibfun.github.io/Token/list/">View Meme Coins</a>
+    </div>
+    <div class="section">
+        <h1>Shibedia Usage Guide</h1>
+        <p>Welcome to <span class="highlight">Shibedia</span>, the platform to create, manage, and explore Meme Coins on Shibarium! This guide explains how to launch a Meme Coin, add metadata, and browse tokens.</p>
+    </div>
+    <div class="section">
+        <h2>Getting Started</h2>
+        <p>Shibedia lets you create and view Meme Coins on Shibarium. No wallet is needed to browse, but you’ll need one to create or manage tokens.</p>
+        <h3>What You Need</h3>
+        <ul>
+            <li><strong>Web Browser</strong>: Chrome, Firefox, or any modern browser.</li>
+            <li><strong>MetaMask</strong>: Install <a href="https://metamask.io" target="_blank">MetaMask</a> for creating or managing Meme Coins.</li>
+            <li><strong>BONE</strong>: Shibarium’s currency for transaction fees.</li>
+        </ul>
+    </div>
+    <div class="section">
+        <h2>How to Use Shibedia</h2>
+        <h3>1. Create a Meme Coin</h3>
+        <p>Launch your own Meme Coin on Shibarium.</p>
+        <ol>
+            <li>Visit <a href="https://shibfun.github.io/Token/" target="_blank">https://shibfun.github.io/Token/</a>.</li>
+            <li>Click <span class="highlight">Connect Wallet</span> to link MetaMask to Shibarium.</li>
+            <li>Enter a name (e.g., “Paw”) and symbol (e.g., “PAW”).</li>
+            <li>Click <span class="highlight">Create Meme Coin</span>, confirm in MetaMask (requires BONE), and note the contract address. You’ll receive 100 trillion tokens.</li>
+        </ol>
+        <h3>2. Add Token Metadata</h3>
+        <p>Enhance your Meme Coin with an image, description, and links.</p>
+        <ol>
+            <li>Go to <a href="https://shibfun.github.io/Token/SetInfo/" target="_blank">https://shibfun.github.io/Token/SetInfo/</a>.</li>
+            <li>Connect MetaMask (must be the token’s owner).</li>
+            <li>Enter your Meme Coin’s contract address and click <span class="highlight">Verify Owner</span>.</li>
+            <li>Add:
+                <ul>
+                    <li><strong>Image URL</strong>: Square image (e.g., <code>https://example.com/token.png</code>).</li>
+                    <li><strong>Description</strong>: Short text (e.g., “Paw is a meme coin on Shibarium.”).</li>
+                    <li><strong>Website</strong>: Your site (e.g., <code>https://example.com</code>).</li>
+                    <li><strong>Twitter</strong>: Twitter link (e.g., <code>https://x.com/pawcoin</code>).</li>
+                    <li><strong>Telegram</strong>: Group link (e.g., <code>https://t.me/pawcoin</code>).</li>
+                </ul>
+            </li>
+            <li>Click <span class="highlight">Set Metadata</span>, confirm in MetaMask, and view your token on Shibedia.</li>
+        </ol>
+        <h3>3. Browse Meme Coins</h3>
+        <p>Explore Meme Coins on Shibedia.</p>
+        <ol>
+            <li>Open <a href="https://shibfun.github.io/Token/list/" target="_blank">https://shibfun.github.io/Token/list/</a>.</li>
+            <li><strong>Browse</strong>:
+                <ul>
+                    <li>View up to 100 recent Meme Coins, each with an image, name, description, and links.</li>
+                    <li>No wallet needed.</li>
+                </ul>
+            </li>
+            <li><strong>Search</strong>:
+                <ul>
+                    <li>Enter a Meme Coin’s contract address in the search bar.</li>
+                    <li>Click <span class="highlight">Search</span> to view details.</li>
+                    <li>Invalid address? You’ll see “Invalid contract address!”</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="section">
+        <h2>Troubleshooting</h2>
+        <ul>
+            <li><strong>Can’t Connect Wallet</strong>: Install or update MetaMask, add Shibarium (chain ID: 109), and retry.</li>
+            <li><strong>Creation Fails</strong>:
+                <ul>
+                    <li>Ensure sufficient BONE for gas fees.</li>
+                    <li>Check network status at <a href="https://shibariumscan.io" target="_blank">ShibariumScan</a>.</li>
+                </ul>
+            </li>
+            <li><strong>No Tokens Show</strong>: Refresh the page or check your internet connection.</li>
+            <li><strong>Search Fails</strong>: Verify the contract address is correct.</li>
+            <li><strong>Metadata Not Updating</strong>: Ensure you’re the token owner and confirm the transaction in MetaMask.</li>
+        </ul>
+    </div>
+    <div class="footer">
+        Powered by <a href="https://shibarium.shib.io/" target="_blank">Shibarium</a> | Shibedia Usage Guide © 2025
+    </div>
+</body>
+</html>
