@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shibedia</title>
+    <title>Token List</title>
+	<!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="Token List">
+    <meta name="twitter:site" content="@Woofswap">
+    <meta name="twitter:title" content="Token List">
+    <meta name="twitter:description" content="Shibarium Fun - Token List.">
+    <meta name="twitter:image" content="https://shibarium.fun/images/2.png">
+    <meta name="twitter:image:alt" content="Shibarium Fun - Token List">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Token List">
+    <meta property="og:description" content="Shibarium Fun - Token List.">
+    <meta property="og:image" content="https://shibarium.fun/images/2.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="og:image:alt" content="Shibarium Fun - Token List">
+    <meta property="og:url" content="https://shibfun.github.io/Token/list/">
+    <meta property="og:type" content="article">
+	
+	<link rel="icon" type="image/png" href="https://woofswap.finance/image/tokens/WOOF.png">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -16,15 +35,27 @@
             align-items: center;
             padding: 20px;
         }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: #1DA1F2;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .header h1 {
-            font-size: clamp(1.8em, 5vw, 2.5em);
+            font-size: clamp(1.8em, 5vw, 2.2em);
             font-weight: bold;
             color: #000;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
         .connect-section {
             margin-bottom: 20px;
@@ -187,6 +218,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s;
+            position: relative;
         }
         .action-buttons button:hover {
             background: #0b7bc1;
@@ -225,6 +257,7 @@
         .footer a {
             color: #1DA1F2;
             text-decoration: none;
+            margin: 0 10px;
         }
         .footer a:hover {
             text-decoration: underline;
@@ -236,27 +269,39 @@
             .post-header h3 { font-size: 1em; }
             .post-content p.description { font-size: 0.9em; }
             .action-buttons { flex-direction: column; gap: 8px; }
+            .nav a { display: block; margin: 5px 0; }
         }
     </style>
 </head>
 <body>
+    <div class="nav">
+        <a href="https://shibfun.github.io/Token/">Create Meme Coin</a>
+        <a href="https://shibfun.github.io/Token/SetInfo/">Manage Metadata</a>
+        <a href="https://shibfun.github.io/Token/list/">View Meme Coins</a>
+        <a href="https://shibfun.github.io/Token/guide/">Usage Guide</a>
+    </div>
     <div class="header">
-        <h1>Shibedia</h1>
+        <h1>Token List</h1>
     </div>
     <div class="connect-section">
-        <button id="connectWalletButton">Connect Wallet</button>
+        <button id="connectWalletButton" aria-label="Connect MetaMask wallet">Connect Wallet</button>
     </div>
     <div class="search-container">
         <div class="search-box">
-            <input type="text" id="tokenAddress" placeholder="Search Meme Coin by Contract Address">
-            <button id="searchButton">Search</button>
+            <input type="text" id="tokenAddress" placeholder="Search Meme Coin by Contract Address" aria-label="Search by contract address">
+            <button id="searchButton" aria-label="Search token">Search</button>
         </div>
         <div id="searchStatus" class="status"></div>
     </div>
     <div class="waterfall" id="waterfall"></div>
     <div class="footer">
-        <p><a href="index.html">Create Meme Coin</a> | <a href="metadata.html">Manage Metadata</a></p>
-        Powered by <a href="https://shibarium.shib.io/" target="_blank">Shibarium</a> | Shibedia © 2025
+        <p>
+            <a href="https://shibfun.github.io/Token/">Create Meme Coin</a>
+            <a href="https://shibfun.github.io/Token/SetInfo/">Manage Metadata</a>
+            <a href="https://shibfun.github.io/Token/list/">View Meme Coins</a>
+            <a href="https://shibfun.github.io/Token/guide/">Usage Guide</a>
+        </p>
+        Powered by <a href="https://shibarium.shib.io/" target="_blank">Shibarium</a> | Token List © 2025
     </div>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
     <script>
@@ -369,7 +414,7 @@
                                 <h3>${name} (${symbol})</h3>
                                 <span>Created by ${shortOwner}</span>
                             </div>
-                            <button class="copy-button" data-address="${owner}">
+                            <button class="copy-button" data-address="${owner}" aria-label="Copy owner address">
                                 <img src="https://img.icons8.com/ios-filled/16/000000/copy.png" alt="Copy">
                                 <span class="tooltip">Copied!</span>
                             </button>
@@ -390,7 +435,7 @@
                             </div>
                         </div>
                         <div class="action-buttons">
-                            <button class="copy-contract-button" data-address="${token}">Copy Contract<span class="tooltip">Copied!</span></button>
+                            <button class="copy-contract-button" data-address="${token}" aria-label="Copy contract address">Copy Contract<span class="tooltip">Copied!</span></button>
                         </div>
                     `;
                     waterfall.appendChild(card);
@@ -402,8 +447,9 @@
                         if (address && address !== "None") {
                             navigator.clipboard.writeText(address).then(() => {
                                 button.classList.add('copied');
+                                alert("Copied successfully!");
                                 setTimeout(() => button.classList.remove('copied'), 2000);
-                            });
+                            }).catch(() => alert("Failed to copy address!"));
                         }
                     });
                 });
@@ -413,8 +459,9 @@
                         if (address) {
                             navigator.clipboard.writeText(address).then(() => {
                                 button.classList.add('copied');
+                                alert("Copied successfully!");
                                 setTimeout(() => button.classList.remove('copied'), 2000);
-                            });
+                            }).catch(() => alert("Failed to copy address!"));
                         }
                     });
                 });
@@ -451,7 +498,7 @@
                             <h3>${name} (${symbol})</h3>
                             <span>Created by ${shortOwner}</span>
                         </div>
-                        <button class="copy-button" data-address="${owner}">
+                        <button class="copy-button" data-address="${owner}" aria-label="Copy owner address">
                             <img src="https://img.icons8.com/ios-filled/16/000000/copy.png" alt="Copy">
                             <span class="tooltip">Copied!</span>
                         </button>
@@ -472,7 +519,7 @@
                         </div>
                     </div>
                     <div class="action-buttons">
-                        <button class="copy-contract-button" data-address="${tokenAddress}">Copy Contract<span class="tooltip">Copied!</span></button>
+                        <button class="copy-contract-button" data-address="${tokenAddress}" aria-label="Copy contract address">Copy Contract<span class="tooltip">Copied!</span></button>
                     </div>
                 `;
                 waterfall.appendChild(card);
@@ -482,8 +529,9 @@
                     if (address && address !== "None") {
                         navigator.clipboard.writeText(address).then(() => {
                             document.querySelector('.copy-button').classList.add('copied');
+                            alert("Copied successfully!");
                             setTimeout(() => document.querySelector('.copy-button').classList.remove('copied'), 2000);
-                        });
+                        }).catch(() => alert("Failed to copy address!"));
                     }
                 });
                 document.querySelector('.copy-contract-button').addEventListener('click', () => {
@@ -491,8 +539,9 @@
                     if (address) {
                         navigator.clipboard.writeText(address).then(() => {
                             document.querySelector('.copy-contract-button').classList.add('copied');
+                            alert("Copied successfully!");
                             setTimeout(() => document.querySelector('.copy-contract-button').classList.remove('copied'), 2000);
-                        });
+                        }).catch(() => alert("Failed to copy address!"));
                     }
                 });
             } catch (error) {
