@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Coin Metadata Manager - Shibarium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #1A1A1A, #2A2A2A); 
+            color: #fff; 
+            padding: 20px; 
+            min-height: 100vh; 
+            line-height: 1.6; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 25px; 
+            background: #252525; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7); 
+        }
+        h1 { 
+            text-align: center; 
+            color: #F5A623; 
+            font-size: clamp(1.8em, 5vw, 2.5em); 
+            margin-bottom: 20px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            text-shadow: 0 2px 5px rgba(245, 166, 35, 0.4); 
+        }
+        .section { 
+            background: #2E2E2E; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            border-radius: 10px; 
+            border: 2px solid #F5A623; 
+        }
+        h2 { 
+            color: #F5A623; 
+            font-size: clamp(1.1em, 3vw, 1.5em); 
+            margin-bottom: 15px; 
+            font-weight: 600; 
+        }
+        .button { 
+            background: #F5A623; 
+            color: #1A1A1A; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 30px; 
+            font-weight: 600; 
+            font-size: 1em; 
+            cursor: pointer; 
+            transition: background 0.3s ease, transform 0.2s ease; 
+            margin: 5px; 
+        }
+        .button:hover { 
+            background: #E5941F; 
+            transform: scale(1.05); 
+        }
+        .button:disabled { 
+            background: #555; 
+            color: #999; 
+            cursor: not-allowed; 
+        }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border: 2px solid #F5A623; 
+            border-radius: 8px; 
+            background: #333; 
+            color: #fff; 
+            font-size: 1em; 
+        }
+        input::placeholder { 
+            color: #888; 
+        }
+        .status { 
+            margin-top: 10px; 
+            font-size: 0.9em; 
+            color: #F5A623; 
+        }
+        .wallet-info { 
+            color: #F5A623; 
+            font-weight: 600; 
+            word-break: break-all; 
+        }
+        .metadata-display { 
+            margin-top: 15px; 
+            font-size: 0.95em; 
+        }
+        .metadata-display p { 
+            margin: 5px 0; 
+        }
+        .loading { 
+            opacity: 0.7; 
+            pointer-events: none; 
+        }
+        .footer { 
+            text-align: center; 
+            margin-top: 20px; 
+            font-size: 0.9em; 
+            color: #666; 
+        }
+        .footer a { 
+            color: #F5A623; 
+            text-decoration: none; 
+        }
+        .footer a:hover { 
+            text-decoration: underline; 
+        }
+        .info-section { 
+            background: #2E2E2E; 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 2px solid #F5A623; 
+            margin-bottom: 20px; 
+            font-size: 0.95em; 
+        }
+        @media (max-width: 600px) {
+            .container { padding: 15px; }
+            .section, .info-section { padding: 15px; }
+            .button { width: 100%; padding: 10px; }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Meme Coin Metadata Manager</h1>
+        <div class="info-section">
+            <p>Create your meme coin at the <a href="index.html">Meme Coin Launchpad</a> (Factory: <a href="https://shibariumscan.io/address/0xCa2bF0A13D397d2d9582e6afd471829f056cf608" target="_blank">0xCa2bF0...056cf608</a>) and manage its metadata here.</p>
+        </div>
+        <div class="section">
+            <h2>Connect to Shibarium</h2>
+            <button id="connectButton" class="button">Connect Wallet</button>
+            <p>Wallet: <span id="walletAddress" class="wallet-info">Not connected</span></p>
+            <div id="networkStatus" class="status">Click to connect...</div>
+        </div>
+        <div class="section" id="verifySection">
+            <h2>Verify Meme Coin Ownership</h2>
+            <input type="text" id="tokenAddress" placeholder="Enter Meme Coin Contract Address">
+            <button id="verifyOwner" class="button">Verify Owner</button>
+            <div id="verifyStatus" class="status"></div>
+            <div id="metadataDisplay" class="metadata-display"></div>
+        </div>
+        <div class="section" id="metadataSection" style="display: none;">
+            <h2>Set Metadata</h2>
+            <input type="text" id="imageUrl" placeholder="Image URL">
+            <input type="text" id="description" placeholder="Description">
+            <input type="text" id="websiteUrl" placeholder="Website URL">
+            <input type="text" id="twitterUrl" placeholder="Twitter URL">
+            <input type="text" id="telegramUrl" placeholder="Telegram URL">
+            <button id="setMetadata" class="button">Set Metadata</button>
+            <div id="metadataStatus" class="status"></div>
+        </div>
+        <div class="footer">
+            <p><a href="index.html" class="button">Back to Launchpad</a></p>
+            Powered by <a href="https://shibarium.shib.io/" target="_blank">Shibarium</a> | Meme Coin Metadata Manager © 2025
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+    <script>
+        let web3, accounts, tokenContract;
+        const tokenABI = [
+            { inputs: [], name: "owner", outputs: [{ internalType: "address", name: "", type: "address" }], stateMutability: "view", type: "function" },
+            { inputs: [
+                { internalType: "string", name: "_imageUrl", type: "string" },
+                { internalType: "string", name: "_description", type: "string" },
+                { internalType: "string", name: "_websiteUrl", type: "string" },
+                { internalType: "string", name: "_twitterUrl", type: "string" },
+                { internalType: "string", name: "_telegramUrl", type: "string" }
+            ], name: "setMetadata", outputs: [], stateMutability: "nonpayable", type: "function" },
+            { inputs: [], name: "getMetadata", outputs: [
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" },
+                { internalType: "string", name: "", type: "string" }
+            ], stateMutability: "view", type: "function" }
+        ];
+        const shibarium = {
+            chainId: 109,
+            name: 'Shibarium',
+            explorerUrl: 'https://shibariumscan.io',
+            rpcUrl: 'https://rpc.shibariumchain.com'
+        };
+
+        async function connectWallet() {
+            const status = document.getElementById('networkStatus');
+            try {
+                if (!window.ethereum) {
+                    status.innerHTML = 'No wallet detected. Please install <a href="https://metamask.io">MetaMask</a>.';
+                    throw new Error("No wallet detected");
+                }
+                status.innerText = "Connecting...";
+                web3 = new Web3(window.ethereum);
+                accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                if (!accounts.length) throw new Error("Please unlock wallet.");
+                const chainId = await web3.eth.getChainId();
+                if (chainId !== 109) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: '0x6d' }]
+                        });
+                    } catch (switchError) {
+                        if (switchError.code === 4902) {
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [{
+                                    chainId: '0x6d',
+                                    chainName: 'Shibarium',
+                                    nativeCurrency: { name: 'BONE', symbol: 'BONE', decimals: 18 },
+                                    rpcUrls: ['https://rpc.shibariumchain.com'],
+                                    blockExplorerUrls: ['https://shibariumscan.io']
+                                }]
+                            });
+                        } else {
+                            throw switchError;
+                        }
+                    }
+                }
+                document.getElementById('walletAddress').innerText = `${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
+                status.innerText = "Connected to Shibarium";
+            } catch (error) {
+                status.innerText = "Failed to connect: " + error.message;
+            }
+        }
+
+        async function verifyOwner() {
+            const section = document.getElementById('verifySection');
+            const status = document.getElementById('verifyStatus');
+            const tokenAddress = document.getElementById('tokenAddress').value.trim();
+            const metadataDisplay = document.getElementById('metadataDisplay');
+            const metadataSection = document.getElementById('metadataSection');
+            if (!accounts) return alert("Please connect wallet first!");
+            if (!web3.utils.isAddress(tokenAddress)) return status.innerText = "Invalid contract address!";
+            try {
+                section.classList.add('loading');
+                status.innerText = "Verifying ownership...";
+                tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
+                const owner = await tokenContract.methods.owner().call();
+                let metadata = ['Not set', 'Not set', 'Not set', 'Not set', 'Not set'];
+                try {
+                    metadata = await tokenContract.methods.getMetadata().call();
+                } catch (error) {
+                    console.warn(`Failed to fetch metadata: ${error.message}`);
+                }
+                metadataDisplay.innerHTML = `
+                    <p><strong>Image URL:</strong> ${metadata[0] || 'Not set'}</p>
+                    <p><strong>Description:</strong> ${metadata[1] || 'Not set'}</p>
+                    <p><strong>Website:</strong> ${metadata[2] || 'Not set'}</p>
+                    <p><strong>Twitter:</strong> ${metadata[3] || 'Not set'}</p>
+                    <p><strong>Telegram:</strong> ${metadata[4] || 'Not set'}</p>
+                `;
+                if (owner.toLowerCase() === accounts[0].toLowerCase()) {
+                    status.innerText = "You are the owner!";
+                    metadataSection.style.display = 'block';
+                } else {
+                    status.innerText = "You are not the owner.";
+                    metadataSection.style.display = 'none';
+                }
+            } catch (error) {
+                status.innerText = "Failed to verify: " + (error.message.includes('revert') ? error.message.split('revert')[1]?.trim() || 'Unknown reason' : error.message);
+            } finally {
+                section.classList.remove('loading');
+            }
+        }
+
+        async function setMetadata() {
+            const section = document.getElementById('metadataSection');
+            const status = document.getElementById('metadataStatus');
+            const imageUrl = document.getElementById('imageUrl').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const websiteUrl = document.getElementById('websiteUrl').value.trim();
+            const twitterUrl = document.getElementById('twitterUrl').value.trim();
+            const telegramUrl = document.getElementById('telegramUrl').value.trim();
+            if (!accounts) return alert("Please connect wallet first!");
+            if (!tokenContract) return alert("Please verify contract first!");
+            try {
+                section.classList.add('loading');
+                status.innerText = "Setting metadata...";
+                const gasPrice = await web3.eth.getGasPrice();
+                const adjustedGasPrice = web3.utils.toBN(gasPrice).mul(web3.utils.toBN(15)).div(web3.utils.toBN(10));
+                await tokenContract.methods.setMetadata(imageUrl, description, websiteUrl, twitterUrl, telegramUrl).send({
+                    from: accounts[0],
+                    gas: '1000000',
+                    gasPrice: adjustedGasPrice
+                });
+                status.innerText = "Metadata set successfully!";
+                document.getElementById('imageUrl').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('websiteUrl').value = '';
+                document.getElementById('twitterUrl').value = '';
+                document.getElementById('telegramUrl').value = '';
+                verifyOwner();
+            } catch (error) {
+                status.innerText = "Failed to set metadata: " + (error.message.includes('revert') ? error.message.split('revert')[1]?.trim() || 'Unknown reason' : error.message);
+            } finally {
+                section.classList.remove('loading');
+            }
+        }
+
+        document.getElementById('connectButton').addEventListener('click', connectWallet);
+        document.getElementById('verifyOwner').addEventListener('click', verifyOwner);
+        document.getElementById('setMetadata').addEventListener('click', setMetadata);
+
+        window.addEventListener('load', () => {
+            if (!window.location.protocol.startsWith('http')) {
+                document.getElementById('networkStatus').innerHTML = 'Please run this page via a local server (e.g., "npx serve") to connect MetaMask.';
+            } else if (!window.ethereum) {
+                document.getElementById('networkStatus').innerHTML = 'No wallet detected. Please install <a href="https://metamask.io">MetaMask</a>.';
+            }
+        });
+    </script>
+</body>
+</html>
